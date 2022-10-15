@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->boolean('can_be_assigned')->default(false);
             $table->boolean('has_client')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

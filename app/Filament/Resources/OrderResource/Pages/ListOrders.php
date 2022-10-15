@@ -17,15 +17,17 @@ class ListOrders extends ListRecords
         $auth    = auth()->user();
         $userIds = [];
 
-        if ($auth->client_id && $auth->hasPermission('order_index_from_client')) {
-            $userIds = User::query()
-                           ->where('client_id', '=', $auth->client_id)
-                           ->get()
-                           ->pluck('id');
+        if ($auth->client_id) {
+            $userIds = $auth->hasPermission('order_index_from_client')
+                ? User::query()
+                      ->where('client_id', '=', $auth->client_id)
+                      ->get()
+                      ->pluck('id')
+                : [$auth->id];
         }
 
         return parent::getTableQuery()
-                     ->when($userIds, static fn($q) => $q->whereIn('user_id', $userIds));
+                     ->when($userIds, static fn($q) => $q->whereIn('registered_id', $userIds));
     }
 
     protected function getActions(): array

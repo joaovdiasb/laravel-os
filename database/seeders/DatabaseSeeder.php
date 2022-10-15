@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
                                                 'name' => 'João Victor Dias Bittencourt',
                                                 'email' => 'joao@aprovalegal.com.br',
-                                                'password' => bcrypt('minhasenha'),
+                                                'password' => 'minhasenha',
                                                 'role_id' => 1
                                             ]);
     }
