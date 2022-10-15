@@ -4,19 +4,16 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
-use Filament\Forms;
+use App\Models\{Client, Role, User};
+use Filament\Forms\Components\{Hidden, TextInput, Select};
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $navigationLabel = 'Usuários';
     protected static ?string $pluralLabel = 'Usuários';
@@ -26,8 +23,47 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                //
-            ]);
+                         Hidden::make('has_client')
+                               ->dehydrated(false),
+                         TextInput::make('name')
+                                  ->label('Nome')
+                                  ->maxLength(258)
+                                  ->required(),
+                         TextInput::make('email')
+                                  ->label('Email')
+                                  ->email()
+                                  ->unique(table: User::class, ignoreRecord: true)
+                                  ->maxLength(258)
+                                  ->required(),
+                         Select::make('role_id')
+                               ->label('Grupo')
+                               ->options(Role::all()->pluck('title', 'id'))
+                               ->searchable()
+                               ->reactive()
+                               ->afterStateUpdated(fn(callable $set, $state) => $set('has_client', Role::find($state)->has_client))
+                               ->afterStateHydrated(fn(callable $set, $state) => $state ? $set('has_client', Role::find($state)->has_client) : null)
+                               ->required(),
+                         Select::make('client_id')
+                               ->label('Cliente')
+                               ->options(Client::all()->pluck('name', 'id'))
+                               ->searchable()
+                               ->required(fn(callable $get) => (int) $get('has_client') === 1)
+                               ->hidden(fn(callable $get) => (int) $get('has_client') !== 1)
+                               ->dehydrated(fn(callable $get) => (int) $get('has_client') === 1),
+                         TextInput::make('password')
+                                  ->label('Senha')
+                                  ->maxLength(64)
+                                  ->minLength(8)
+                                  ->password()
+                                  ->confirmed()
+                                  ->dehydrated(fn(callable $get) => $get('password'))
+                                  ->disableAutocomplete(),
+                         TextInput::make('password_confirmation')
+                                  ->label('Confirme sua senha')
+                                  ->dehydrated(false)
+                                  ->password()
+                                  ->disableAutocomplete(),
+                     ]);
     }
 
     public static function table(Table $table): Table
@@ -55,17 +91,17 @@ class UserResource extends Resource
                                                    ->date('d/m/Y H:i:s')
                                                    ->sortable()
                                                    ->searchable(isIndividual: true),
-            ])
+                      ])
             ->filters([
-                //
-            ])
+                          //
+                      ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
+                          Tables\Actions\EditAction::make(),
+                          Tables\Actions\DeleteAction::make(),
+                      ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]);
+                              Tables\Actions\DeleteBulkAction::make(),
+                          ]);
     }
 
     public static function getPages(): array

@@ -21,7 +21,7 @@
         />
     </x-filament::form>
     <section class="text-black-100">
-        <div class="container px-4 py-12 mx-auto">
+        <div class="container px-4 pt-4 mx-auto">
             <div class="grid gap-4 mx-4 sm:grid-cols-12">
                 <div class="relative col-span-12 px-4 space-y-6 sm:col-span-9">
                     <div class="col-span-12 space-y-12 relative px-4 sm:col-span-8 sm:space-y-8 sm:before:absolute sm:before:top-2 sm:before:bottom-0 sm:before:w-0.5 sm:before:-left-3 before:bg-primary-700">

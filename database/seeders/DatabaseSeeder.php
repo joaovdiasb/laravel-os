@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
                         ClientSeeder::class,
                         OrderSituationSeeder::class,
                         OrderCategorySeeder::class,
-                        RoleSeeder::class,
                         OrderFlowTypeSeeder::class,
                         RoleSeeder::class,
                         PermissionSeeder::class,

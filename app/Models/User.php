@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,11 +21,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -45,6 +42,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected function password(): Attribute
+    {
+        return Attribute::make(
+            set: static fn ($value) => bcrypt($value)
+        );
+    }
+
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
@@ -63,4 +67,5 @@ class User extends Authenticatable
 
         return in_array($permission, $permissions, true);
     }
+
 }

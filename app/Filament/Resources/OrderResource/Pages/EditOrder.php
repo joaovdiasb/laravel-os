@@ -15,19 +15,11 @@ class EditOrder extends EditRecord
 {
     protected static string $resource = OrderResource::class;
     protected static string $view = 'filament.pages.edit-order';
+    protected static ?string $breadcrumb = 'Visualização do Chamado';
+    public static ?string $title = 'Visualização do Chamado';
     public ?string $message = null;
     public ?int $order_flow_type_id = null;
     public ?array $attachments = [];
-
-    public function getBreadcrumb(): string
-    {
-        return 'Visualização';
-    }
-
-    protected function getTitle(): string
-    {
-        return 'Visualização do chamado';
-    }
 
     protected function authorizeAccess(): void
     {

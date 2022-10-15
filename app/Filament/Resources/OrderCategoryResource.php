@@ -6,6 +6,7 @@ use App\Filament\Resources\OrderCategoryResource\Pages;
 use App\Filament\Resources\OrderCategoryResource\RelationManagers;
 use App\Models\OrderCategory;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -26,7 +27,10 @@ class OrderCategoryResource extends Resource
     {
         return $form
             ->schema([
-                //
+                         TextInput::make('title')
+                                  ->label('Título')
+                                  ->maxLength(258)
+                                  ->required(),
             ]);
     }
 
