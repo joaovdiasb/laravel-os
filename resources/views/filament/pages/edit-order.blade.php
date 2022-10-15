@@ -31,7 +31,7 @@
                                 <time class="text-xs tracking-wide uppercase text-black-400">{{ $orderFlow->created_at->format('d/m/Y H:i:s') }} - {{ $orderFlow->created_at->diffForHumans() }}</time>
                                 <div x-data="richEditorFormComponent({
                                         state: $wire.entangle('data.description').defer,
-                                    })"
+                                     })"
                                      x-on:trix-change="state = $event.target.value" x-on:trix-attachment-add="
                                         if (! $event.attachment.file) return
 
@@ -45,13 +45,14 @@
                                                 })
                                             })
                                         })
-                                    "
+                                     "
                                      x-on:trix-file-accept="
                                         if (true) return
 
                                         $event.preventDefault()
-                                    "
+                                     "
                                      class="filament-forms-rich-editor-component mt-2 space-y-2">
+                                    <span class="text-sm absolute right-2 pt-3">{{ $orderFlow->orderFlowType->title }}</span>
                                     <div @class([
                                                     'prose block w-full max-w-none rounded-lg border border-gray-300 p-3 opacity-70 shadow-sm',
                                                     "bg-{$orderFlow->orderFlowType->color}-100" => $orderFlow->orderFlowType->color,
@@ -62,7 +63,7 @@
                                 </div>
                             </div>
                         @empty
-                            Sem fluxo
+                            <storng>Sem movimentação.</storng>
                         @endforelse
                     </div>
                 </div>

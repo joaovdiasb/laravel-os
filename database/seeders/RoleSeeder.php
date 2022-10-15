@@ -18,14 +18,17 @@ class RoleSeeder extends Seeder
                          [
                              'title'           => 'Administardor',
                              'can_be_assigned' => 1,
+                             'has_client'      => 0,
                          ],
                          [
                              'title'           => 'Técnico',
                              'can_be_assigned' => 1,
+                             'has_client'      => 0,
                          ],
                          [
                              'title'           => 'Cliente',
                              'can_be_assigned' => 0,
+                             'has_client'      => 1,
                          ],
                      ]);
     }

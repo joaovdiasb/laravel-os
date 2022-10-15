@@ -34,7 +34,15 @@ class OrderCategoryResource extends Resource
     {
         return $table
             ->columns([
-                //
+                          Tables\Columns\TextColumn::make('title')
+                                                   ->label('Título')
+                                                   ->sortable()
+                                                   ->searchable(isIndividual: true),
+                          Tables\Columns\TextColumn::make('created_at')
+                                                   ->label('Cadastrado em')
+                                                   ->date('d/m/Y H:i:s')
+                                                   ->sortable()
+                                                   ->searchable(isIndividual: true),
             ])
             ->filters([
                 //
