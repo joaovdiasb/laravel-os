@@ -124,7 +124,7 @@ class EditOrder extends EditRecord
                                                                                                                                             ->get()
                                                                                                                                             ->pluck('name', 'id')))
                                                     ->hintAction(
-                                                        Action::make('Assign')
+                                                        Action::make('Se atribuir')
                                                               ->icon('heroicon-o-user-add')
                                                               ->action(function(\Filament\Forms\ComponentContainer $form) {
                                                                   $form->model->update(['assigned_id' => auth()->id()]);
@@ -141,6 +141,7 @@ class EditOrder extends EditRecord
 
                                                                   return $auth->cannot('update', $this->record) && !$auth->role->can_be_assigned;
                                                               })
+                                                              ->tooltip('Se atribuir')
 
                                                     ),
                                           ])

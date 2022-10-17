@@ -13,6 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', static fn() => response()->redirectToRoute('filament.auth.login'));
+Route::get('/app', static fn() => response()->redirectToRoute('filament.auth.login'));

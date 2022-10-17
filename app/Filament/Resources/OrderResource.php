@@ -66,7 +66,8 @@ class OrderResource extends Resource
                                        ])
                       ->fileAttachmentsDirectory('attachments')
                       ->fileAttachmentsVisibility('public')
-                      ->maxLength(5120),
+                      ->maxLength(5120)
+            ->helperText('Caso trate-se de um possível problema, é imprescíndivel evidenciar com imagens e número do cadastro, para assim, podermos avaliar.'),
         ];
     }
 

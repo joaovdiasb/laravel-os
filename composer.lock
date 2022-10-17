@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b7af72bf6095892c2fb232d1d7ae200c",
+    "content-hash": "aa12361ba09a2e521f3e2bba5e8c6b73",
     "packages": [
         {
             "name": "akaunting/laravel-money",
@@ -3851,79 +3851,6 @@
             "time": "2022-10-11T06:37:42+00:00"
         },
         {
-            "name": "suleymanozev/filament-radio-button-field",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/suleymanozev/filament-radio-button-field.git",
-                "reference": "5dd8e9620fc3b2cee4522adaa5487fe90d8645e5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/suleymanozev/filament-radio-button-field/zipball/5dd8e9620fc3b2cee4522adaa5487fe90d8645e5",
-                "reference": "5dd8e9620fc3b2cee4522adaa5487fe90d8645e5",
-                "shasum": ""
-            },
-            "require": {
-                "filament/forms": "^2.0",
-                "illuminate/contracts": "^8.6|^9.0",
-                "php": "^8.0",
-                "spatie/laravel-package-tools": "^1.9.2"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.0",
-                "nunomaduro/collision": "^6.0",
-                "nunomaduro/larastan": "^2.0.1",
-                "orchestra/testbench": "^7.0",
-                "pestphp/pest": "^1.21",
-                "pestphp/pest-plugin-laravel": "^1.1",
-                "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan-deprecation-rules": "^1.0",
-                "phpstan/phpstan-phpunit": "^1.0",
-                "phpunit/phpunit": "^9.5"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Suleymanozev\\FilamentRadioButtonField\\FilamentRadioButtonFieldServiceProvider"
-                    ],
-                    "aliases": {
-                        "FilamentRadioButtonField": "Suleymanozev\\FilamentRadioButtonField\\Facades\\FilamentRadioButtonField"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Suleymanozev\\FilamentRadioButtonField\\": "src",
-                    "Suleymanozev\\FilamentRadioButtonField\\Database\\Factories\\": "database/factories"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Süleyman ÖZEV",
-                    "email": "info@suleymanozev.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "The radio button field for the Filament forms",
-            "homepage": "https://github.com/suleymanozev/filament-radio-button-field",
-            "keywords": [
-                "filament-radio-button-field",
-                "laravel",
-                "suleymanozev"
-            ],
-            "support": {
-                "issues": "https://github.com/suleymanozev/filament-radio-button-field/issues",
-                "source": "https://github.com/suleymanozev/filament-radio-button-field/tree/v1.0.0"
-            },
-            "time": "2022-07-23T04:59:57+00:00"
-        },
-        {
             "name": "symfony/console",
             "version": "v6.1.6",
             "source": {
@@ -6884,6 +6811,50 @@
                 "source": "https://github.com/laravel/sail"
             },
             "time": "2022-09-28T13:13:22+00:00"
+        },
+        {
+            "name": "lucascudo/laravel-pt-br-localization",
+            "version": "v1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lucascudo/laravel-pt-BR-localization.git",
+                "reference": "7470427992f6fe6b2dbe616263ff8da40d1d1599"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lucascudo/laravel-pt-BR-localization/zipball/7470427992f6fe6b2dbe616263ff8da40d1d1599",
+                "reference": "7470427992f6fe6b2dbe616263ff8da40d1d1599",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Lucascudo\\LaravelPtBRLocalization\\LaravelPtBRLocalizationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Lucascudo\\LaravelPtBRLocalization\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Cascudo",
+                    "email": "lucas.sisau@gmail.com"
+                }
+            ],
+            "description": "Arquivos de linguagem em Português do Brasil (pt-BR) para Laravel >= 5.6",
+            "support": {
+                "issues": "https://github.com/lucascudo/laravel-pt-BR-localization/issues",
+                "source": "https://github.com/lucascudo/laravel-pt-BR-localization/tree/v1.2.3"
+            },
+            "time": "2022-06-02T07:43:13+00:00"
         },
         {
             "name": "mockery/mockery",

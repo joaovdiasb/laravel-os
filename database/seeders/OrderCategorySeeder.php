@@ -19,10 +19,10 @@ class OrderCategorySeeder extends Seeder
                                      'title' => 'Dúvida',
                                  ],
                                  [
-                                     'title' => 'Solicitação',
+                                     'title' => 'Solução de problema',
                                  ],
                                  [
-                                     'title' => 'Problema',
+                                     'title' => 'Pedido de alteração'
                                  ]
                               ]);
     }
