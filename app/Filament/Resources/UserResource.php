@@ -82,7 +82,7 @@ class UserResource extends Resource
                                                    ->label('Grupo')
                                                    ->sortable()
                                                    ->searchable(isIndividual: true),
-                          Tables\Columns\TextColumn::make('client.title')
+                          Tables\Columns\TextColumn::make('client.name')
                                                    ->label('Cliente')
                                                    ->sortable()
                                                    ->searchable(isIndividual: true),
