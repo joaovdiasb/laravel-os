@@ -6,11 +6,15 @@ use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Order;
 use App\Models\OrderCategory;
-use Filament\Forms\Components\{Card, RichEditor, Select, TextInput};
+use App\Models\OrderSituation;
+use Carbon\Carbon;
+use Filament\Forms\Components\{Card, DatePicker, RichEditor, Select, TextInput};
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderResource extends Resource
 {
@@ -67,7 +71,7 @@ class OrderResource extends Resource
                       ->fileAttachmentsDirectory('attachments')
                       ->fileAttachmentsVisibility('public')
                       ->maxLength(5120)
-            ->helperText('Caso trate-se de um possível problema, é imprescíndivel evidenciar com imagens e número do cadastro, para assim, podermos avaliar.'),
+                      ->helperText('Caso trate-se de um possível problema, é imprescíndivel evidenciar com imagens e número do cadastro, para assim, podermos avaliar.'),
         ];
     }
 
@@ -87,6 +91,10 @@ class OrderResource extends Resource
                                                    ->label('Aberto por')
                                                    ->sortable()
                                                    ->searchable(isIndividual: true),
+                          Tables\Columns\TextColumn::make('created_at')
+                                                   ->label('Aberto em')
+                                                   ->date('d/m/Y')
+                                                   ->sortable(),
                           Tables\Columns\TextColumn::make('assigned.name')
                                                    ->label('Atribuído para')
                                                    ->sortable()
@@ -94,11 +102,47 @@ class OrderResource extends Resource
                           Tables\Columns\TextColumn::make('orderFlow.created_at')
                                                    ->label('Último andamento em')
                                                    ->date('d/m/Y H:i:s')
-                                                   ->sortable()
-                                                   ->searchable(isIndividual: true),
+                                                   ->sortable(),
                       ])
             ->filters([
-                          //
+                          Filter::make('created_at')
+                                ->form([
+                                           DatePicker::make('created_from')
+                                                     ->label('De'),
+                                           DatePicker::make('created_until')
+                                                     ->label('Até'),
+                                       ])
+                                ->indicateUsing(function(array $data): ?string {
+                                    $message = null;
+
+                                    if ($data['created_from']) {
+                                        $message = 'De ' . Carbon::parse($data['created_from'])
+                                                                 ->format('d/m/Y');
+                                    }
+
+                                    if ($data['created_until']) {
+                                        $message .= ($message ? ' até ' : 'Até ') .
+                                            Carbon::parse($data['created_until'])
+                                                  ->format('d/m/Y');
+                                    }
+
+                                    return $message;
+                                })
+                                ->query(function(Builder $query, array $data): Builder {
+                                    return $query
+                                        ->when(
+                                            $data['created_from'],
+                                            fn(Builder $query, $date): Builder => $query->where('created_at', '>=', $date),
+                                        )
+                                        ->when(
+                                            $data['created_until'],
+                                            fn(Builder $query, $date): Builder => $query->where('created_at', '<=', $date),
+                                        );
+                                }),
+                          Tables\Filters\SelectFilter::make('order_situation_id')
+                                                     ->label('Situação')
+                                                     ->searchable()
+                                                     ->options(OrderSituation::all()->pluck('title', 'id')),
                       ])
             ->actions([
                           Tables\Actions\Action::make('view')

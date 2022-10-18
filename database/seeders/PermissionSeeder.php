@@ -52,19 +52,19 @@ class PermissionSeeder extends Seeder
                                    'identifier' => 'role_delete',
                                ],
                                [
-                                   'title'      => 'User: listar',
+                                   'title'      => 'Usuário: listar',
                                    'identifier' => 'user_index',
                                ],
                                [
-                                   'title'      => 'User: cadastrar',
+                                   'title'      => 'Usuário: cadastrar',
                                    'identifier' => 'user_create',
                                ],
                                [
-                                   'title'      => 'User: atualizar',
+                                   'title'      => 'Usuário: atualizar',
                                    'identifier' => 'user_update',
                                ],
                                [
-                                   'title'      => 'User: deletar',
+                                   'title'      => 'Usuário: deletar',
                                    'identifier' => 'user_delete',
                                ],
                                [
