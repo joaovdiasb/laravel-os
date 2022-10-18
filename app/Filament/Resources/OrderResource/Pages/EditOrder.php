@@ -139,7 +139,7 @@ class EditOrder extends EditRecord
                                                               ->disabled(function() {
                                                                   $auth = auth()->user();
 
-                                                                  return $auth->cannot('update', $this->record) && !$auth->role->can_be_assigned;
+                                                                  return $auth->cannot('update', $this->record) || !$auth->role->can_be_assigned;
                                                               })
                                                               ->tooltip('Se atribuir')
 

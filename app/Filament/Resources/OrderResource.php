@@ -4,9 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
-use App\Models\Order;
-use App\Models\OrderCategory;
-use App\Models\OrderSituation;
+use App\Models\{Order, OrderCategory, OrderSituation};
 use Carbon\Carbon;
 use Filament\Forms\Components\{Card, DatePicker, RichEditor, Select, TextInput};
 use Filament\Resources\Form;
