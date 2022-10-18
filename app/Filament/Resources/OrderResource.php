@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
+use Illuminate\Support\Facades\Cache;
 use App\Models\{Order, OrderCategory, OrderSituation};
 use Carbon\Carbon;
 use Filament\Forms\Components\{Card, DatePicker, RichEditor, Select, TextInput};
@@ -140,7 +141,8 @@ class OrderResource extends Resource
                           Tables\Filters\SelectFilter::make('order_situation_id')
                                                      ->label('Situação')
                                                      ->searchable()
-                                                     ->options(OrderSituation::all()->pluck('title', 'id')),
+                                                     ->options(Cache::rememberForever('order-situation:all', static fn() => OrderSituation::all()
+                                                                                                                                          ->pluck('title', 'id'))),
                       ])
             ->actions([
                           Tables\Actions\Action::make('view')

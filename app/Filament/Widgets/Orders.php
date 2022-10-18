@@ -15,41 +15,42 @@ class Orders extends BarChartWidget
 
     private function getTrend(): Collection
     {
-        $auth     = auth()->user();
-        $clientId = $auth->client_id ?? '*';
+        $auth = auth()->user();
 
-        return Cache::remember("client:{$clientId}:chart:orders", now()->addHour(), static function() use ($auth) {
-            return Trend::query(
-                Order::query()
-                     ->join('users', 'users.id', '=', 'orders.registered_id')
-                     ->leftJoin('clients', 'users.client_id', '=', 'clients.id')
-                     ->when($auth->client_id, fn($q) => $q->where('clients.id', '=', $auth->client_id))
-            )
-                        ->between(
-                            start: now()->startOfYear(),
-                            end:   now()->endOfYear(),
-                        )
-                        ->perMonth()
-                        ->count();
-        });
+        return Trend::query(
+            Order::query()
+                 ->join('users', 'users.id', '=', 'orders.registered_id')
+                 ->leftJoin('clients', 'users.client_id', '=', 'clients.id')
+                 ->when($auth->client_id, fn($q) => $q->where('clients.id', '=', $auth->client_id))
+        )
+                    ->between(
+                        start: now()->startOfYear(),
+                        end:   now()->endOfYear(),
+                    )
+                    ->perMonth()
+                    ->count();
     }
 
     protected function getData(): array
     {
-        $orders = $this->getTrend();
+        $clientId = $auth->client_id ?? '*';
 
-        return [
-            'datasets' => [
-                [
-                    'backgroundColor' => 'rgba(255, 99, 132, 0.5)',
-                    'borderColor'     => 'rgb(255, 99, 132)',
-                    'borderWidth'     => '1',
-                    'label'           => 'Chamados',
-                    'data'            => $orders->map(fn(TrendValue $value) => $value->aggregate),
+        return Cache::remember("client:{$clientId}:chart:orders", now()->addHour(), function() {
+            $orders = $this->getTrend();
+
+            return [
+                'datasets' => [
+                    [
+                        'backgroundColor' => 'rgba(255, 99, 132, 0.5)',
+                        'borderColor'     => 'rgb(255, 99, 132)',
+                        'borderWidth'     => '1',
+                        'label'           => 'Chamados',
+                        'data'            => $orders->map(fn(TrendValue $value) => $value->aggregate),
+                    ],
                 ],
-            ],
-            'labels'   => $orders->map(fn(TrendValue $value) => Carbon::parse($value->date)
-                                                                      ->format('m/Y')),
-        ];
+                'labels'   => $orders->map(fn(TrendValue $value) => Carbon::parse($value->date)
+                                                                          ->format('m/Y')),
+            ];
+        });
     }
 }
