@@ -105,6 +105,7 @@ class OrderResource extends Resource
                           Tables\Columns\TextColumn::make('registered.client.name')
                                                    ->label('Cliente')
                                                    ->sortable()
+                                                   ->hidden(auth()->user()->client_id !== null)
                                                    ->searchable(isIndividual: true),
                           Tables\Columns\TextColumn::make('registered.name')
                                                    ->label('Aberto por')
