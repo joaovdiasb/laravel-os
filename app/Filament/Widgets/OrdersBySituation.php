@@ -5,8 +5,6 @@ namespace App\Filament\Widgets;
 use App\Models\Order;
 use App\Models\OrderSituation;
 use Filament\Widgets\DoughnutChartWidget;
-use App\Utils\Trend\{Trend, TrendValue};
-use Illuminate\Support\{Carbon, Collection};
 use Illuminate\Support\Facades\Cache;
 
 class OrdersBySituation extends DoughnutChartWidget
