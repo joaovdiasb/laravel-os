@@ -178,7 +178,7 @@ class OrderResource extends Resource
                                                    ->columns(1),
                                        ])
                                 ->indicateUsing(function(array $data) use ($orderSituation, $situationCompareOptions): ?string {
-                                    if (!isset($situationCompareOptions[$data['signal']]) || !isset($orderSituation[(int) $data['order_situation_id']])) {
+                                    if (!isset($situationCompareOptions[$data['signal']], $orderSituation[(int) $data['order_situation_id']])) {
                                         return null;
                                     }
 
