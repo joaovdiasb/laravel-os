@@ -33,7 +33,7 @@ class Orders extends BarChartWidget
 
     protected function getData(): array
     {
-        $clientId = $auth->client_id ?? '*';
+        $clientId = auth()->user()->client_id ?? '*';
 
         return Cache::remember("client:{$clientId}:chart:orders", now()->addHour(), function() {
             $orders = $this->getTrend();
