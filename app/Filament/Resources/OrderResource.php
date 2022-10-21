@@ -7,7 +7,7 @@ use App\Filament\Resources\OrderResource\RelationManagers;
 use Illuminate\Support\Facades\Cache;
 use App\Models\{Order, OrderCategory, OrderSituation};
 use Carbon\Carbon;
-use Filament\Forms\Components\{Card, DatePicker, RichEditor, Select, TextInput};
+use Filament\Forms\Components\{Card, DatePicker, Fieldset, Grid, RichEditor, Select, TextInput, Toggle};
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -74,8 +74,18 @@ class OrderResource extends Resource
         ];
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function table(Table $table): Table
     {
+        $orderSituation          = Cache::rememberForever('order-situation:all', static fn() => OrderSituation::all()
+                                                                                                              ->pluck('title', 'id'));
+        $situationCompareOptions = [
+            0 => 'Igual a',
+            1 => 'Diferente de',
+        ];
+
         return $table
             ->columns([
                           Tables\Columns\TextColumn::make('orderSituation.title')
@@ -84,6 +94,16 @@ class OrderResource extends Resource
                                                    ->searchable(isIndividual: true),
                           Tables\Columns\TextColumn::make('subject')
                                                    ->label('Assunto')
+                                                   ->limit(20)
+                                                   ->tooltip(function(Tables\Columns\TextColumn $column): ?string {
+                                                       $state = $column->getState();
+
+                                                       return strlen($state) <= $column->getLimit() ? null : $state;
+                                                   })
+                                                   ->sortable()
+                                                   ->searchable(isIndividual: true),
+                          Tables\Columns\TextColumn::make('registered.client.name')
+                                                   ->label('Cliente')
                                                    ->sortable()
                                                    ->searchable(isIndividual: true),
                           Tables\Columns\TextColumn::make('registered.name')
@@ -96,10 +116,12 @@ class OrderResource extends Resource
                                                    ->sortable(),
                           Tables\Columns\TextColumn::make('assigned.name')
                                                    ->label('Atribuído para')
+                                                   ->default('-')
                                                    ->sortable()
                                                    ->searchable(isIndividual: true),
                           Tables\Columns\TextColumn::make('orderFlow.created_at')
                                                    ->label('Último andamento em')
+                                                   ->description(fn(Order $record): ?string => $record->orderFlow?->orderFlowType->title, position: 'bellow')
                                                    ->date('d/m/Y H:i:s')
                                                    ->sortable(),
                       ])
@@ -138,18 +160,44 @@ class OrderResource extends Resource
                                             fn(Builder $query, $date): Builder => $query->where('created_at', '<=', $date),
                                         );
                                 }),
-                          Tables\Filters\SelectFilter::make('order_situation_id')
-                                                     ->label('Situação')
-                                                     ->searchable()
-                                                     ->options(Cache::rememberForever('order-situation:all', static fn() => OrderSituation::all()
-                                                                                                                                          ->pluck('title', 'id'))),
+                          Filter::make('order_situation')
+                                ->form([
+                                           Fieldset::make('Situação')
+                                                   ->schema([
+                                                                Select::make('signal')
+                                                                      ->label('')
+                                                                      ->default(1)
+                                                                      ->options($situationCompareOptions),
+                                                                Select::make('order_situation_id')
+                                                                      ->label('')
+                                                                      ->default(5)
+                                                                      ->searchable()
+                                                                      ->options($orderSituation),
+                                                            ])
+                                                   ->columns(1),
+                                       ])
+                                ->indicateUsing(function(array $data) use ($orderSituation, $situationCompareOptions): ?string {
+                                    $compare        = str($situationCompareOptions[$data['signal']])->lower();
+                                    $situationTitle = $orderSituation[(int) $data['order_situation_id']];
+
+                                    return "Situação {$compare} {$situationTitle}";
+                                })
+                                ->query(function(Builder $query, array $data): Builder {
+                                    return $query
+                                        ->when(
+                                            $data['order_situation_id'],
+                                            fn(Builder $query, $date): Builder => $query->where('order_situation_id', ((int) $data['signal'] === 0 ? '=' : '!='), $data['order_situation_id']),
+                                        );
+                                }),
                       ])
             ->actions([
-                          Tables\Actions\Action::make('view')
-                                               ->label('Visualizar')
-                                               ->icon('heroicon-o-eye')
-                                               ->url(fn(Order $record) => route('filament.resources.orders.edit', $record)),
-                          Tables\Actions\DeleteAction::make(),
+                          Tables\Actions\ActionGroup::make([
+                                                               Tables\Actions\Action::make('view')
+                                                                                    ->label('Visualizar')
+                                                                                    ->icon('heroicon-o-eye')
+                                                                                    ->url(fn(Order $record) => route('filament.resources.orders.edit', $record)),
+                                                               Tables\Actions\DeleteAction::make(),
+                                                           ]),
                       ])
             ->bulkActions([
                               Tables\Actions\DeleteBulkAction::make(),
