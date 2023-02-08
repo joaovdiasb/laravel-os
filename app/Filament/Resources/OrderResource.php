@@ -171,7 +171,8 @@ class OrderResource extends Resource
                                                                       ->options($situationCompareOptions),
                                                                 Select::make('order_situation_id')
                                                                       ->label('')
-                                                                      ->default(5)
+                                                                      ->default(['5'])
+                                                                      ->multiple()
                                                                       ->searchable()
                                                                       ->options($orderSituation),
                                                             ])
@@ -193,8 +194,11 @@ class OrderResource extends Resource
                                     return $query
                                         ->when(
                                             $data['order_situation_id'],
-                                            fn(Builder $query, $date): Builder => $query->where('order_situation_id', ((int) $data['signal'] === 0 ? '=' : '!='), $data['order_situation_id']),
-                                        );
+                                            function(Builder $query) use ($data): Builder {
+                                                return $query->when((int) $data['signal'] === 0,
+                                                    fn(Builder $query): Builder => $query->whereIntegerInRaw('order_situation_id', $data['order_situation_id']),
+                                                    fn(Builder $query): Builder => $query->whereIntegerNotInRaw('order_situation_id', $data['order_situation_id']));
+                                            });
                                 }),
                       ])
             ->actions([
