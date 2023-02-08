@@ -2,15 +2,15 @@
 
 namespace Database\Seeders;
 
- use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
+
     /**
      * Seed the application's database.
-     *
      * @return void
      */
     public function run()
@@ -22,14 +22,15 @@ class DatabaseSeeder extends Seeder
                         OrderFlowTypeSeeder::class,
                         RoleSeeder::class,
                         PermissionSeeder::class,
-                        PermissionRoleSeeder::class
+                        PermissionRoleSeeder::class,
                     ]);
 
-        \App\Models\User::factory()->create([
-                                                'name' => 'João Victor Dias Bittencourt',
-                                                'email' => 'joao@aprovalegal.com.br',
-                                                'password' => 'minhasenha',
-                                                'role_id' => 1
-                                            ]);
+        \App\Models\User::factory()
+                        ->create([
+                                     'name'     => 'João Victor Dias Bittencourt',
+                                     'email'    => 'joao@aprovalegal.com.br',
+                                     'password' => 'minhasenha',
+                                     'role_id'  => 1,
+                                 ]);
     }
 }

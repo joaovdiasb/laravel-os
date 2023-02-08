@@ -18,7 +18,7 @@ class ListOrders extends ListRecords
         $userIds = [];
 
         if ($auth->client_id) {
-            $userIds = $auth->hasPermission('order_index_from_client')
+            $userIds = $auth->hasPermission('order_index_from_clients')
                 ? User::query()
                       ->where('client_id', '=', $auth->client_id)
                       ->get()

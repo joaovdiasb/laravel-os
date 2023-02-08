@@ -182,10 +182,12 @@ class OrderResource extends Resource
                                         return null;
                                     }
 
-                                    $compare        = str($situationCompareOptions[$data['signal']])->lower();
-                                    $situationTitle = $orderSituation[(int) $data['order_situation_id']];
+                                    $compare         = str($situationCompareOptions[$data['signal']])->lower();
+                                    $situationTitles = collect($orderSituation->toArray())
+                                        ->filter(fn($item, $index) => in_array((string) $index, $data['order_situation_id'], true))
+                                        ->join(', ');
 
-                                    return "Situação {$compare} {$situationTitle}";
+                                    return "Situação {$compare}: {$situationTitles}";
                                 })
                                 ->query(function(Builder $query, array $data): Builder {
                                     return $query
