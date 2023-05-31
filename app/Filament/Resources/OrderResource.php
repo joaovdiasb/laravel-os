@@ -88,6 +88,10 @@ class OrderResource extends Resource
 
         return $table
             ->columns([
+                          Tables\Columns\TextColumn::make('id')
+                                                   ->label('ID')
+                                                   ->sortable()
+                                                   ->searchable(isIndividual: true),
                           Tables\Columns\TextColumn::make('orderSituation.title')
                                                    ->label('Situação')
                                                    ->sortable()
