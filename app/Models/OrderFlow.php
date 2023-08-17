@@ -17,6 +17,11 @@ class OrderFlow extends Model
         'attachments' => 'array',
     ];
 
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
